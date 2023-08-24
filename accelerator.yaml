@@ -1,0 +1,59 @@
+accelerator:
+  displayName: Simple Accelerator
+  description: Contains just a README
+  iconUrl: https://blogs.vmware.com/wp-content/uploads/2022/02/tap.png
+  tags:
+    - simple
+    - getting-started
+  options:
+
+    # DATABASE SECTION
+    - name: usePostgres
+      description: "If set to true, application will be configured to use an existing PostgreSQL databse instance"
+      label: Use PostgreSQL for persistency?
+      dataType: boolean
+      defaultValue: false
+      inputType: checkbox
+      required: true
+    - name: postgresInfo
+      description: "Database service reference"
+      inputType: text
+      label: DB Path
+      required: true
+      defaultValue: "????"
+      dependsOn:
+        name: usePostgres
+
+
+
+    - name: firstConfigurableParameter
+      inputType: text
+      label: The text used to replace the first placeholder text in the README.md. Converted to lowercase.
+      defaultValue: Configurable Parameter 1
+      required: true
+    - name: secondConfigurableParameterCheckbox
+      inputType: checkbox
+      dataType: boolean
+      label: Enable to configure the second configurable parameter, otherwise use the default value.
+    - name: secondConfigurableParameter
+      inputType: text
+      label: The text used to replace the second placeholder text in the README.md. Converted to lowercase.
+      defaultValue: Configurable Parameter 2
+      dependsOn:
+        name: secondConfigurableParameterCheckbox
+engine:
+  merge:
+    - include: ['**']
+      exclude: ['README.md']
+    - include: [ "README.md" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "CONFIGURABLE_PARAMETER_1"
+              with: "#firstConfigurableParameter.toLowerCase()"
+        - condition: "#secondConfigurableParameterCheckbox"
+          chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "CONFIGURABLE_PARAMETER_2"
+                with: "#secondConfigurableParameter.toLowerCase()"

@@ -1,10 +1,11 @@
 accelerator:
-  displayName: Simple Accelerator
-  description: Contains just a README
+  displayName: Citizen Accelerator
+  description: API with DB sample
   iconUrl: https://blogs.vmware.com/wp-content/uploads/2022/02/tap.png
   tags:
-    - simple
-    - getting-started
+    - citizen
+    - api
+    - postgres
   options:
 
     # DATABASE SECTION

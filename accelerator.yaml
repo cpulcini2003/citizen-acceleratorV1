@@ -1,14 +1,13 @@
 accelerator:
-  displayName: Citizen Accelerator
-  description: API with DB sample
+  displayName: Simple Accelerator
+  description: Contains just a README
   iconUrl: https://blogs.vmware.com/wp-content/uploads/2022/02/tap.png
   tags:
-    - citizen
-    - api
-    - postgres
+    - simple
+    - getting-started
   options:
 
-    # DATABASE SECTION
+    # CONFIG SERVICE SECTION
     - name: usePostgres
       description: "If set to true, application will be configured to use an existing PostgreSQL databse instance"
       label: Use PostgreSQL for persistency?
@@ -21,7 +20,7 @@ accelerator:
       inputType: text
       label: DB Path
       required: true
-      defaultValue: "????"
+      defaultValue: "?????"
       dependsOn:
         name: usePostgres
 

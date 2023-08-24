@@ -21,7 +21,7 @@ In order to further develop this application the following tools needs to be set
 Here are some configurable customized by accelerator:
 
 Database Type
-* dbType
+* /citizens
 
 Configuration files were updated accordingly see:
 - src/main/resources/application.properties

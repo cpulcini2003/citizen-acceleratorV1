@@ -38,7 +38,6 @@ accelerator:
       defaultValue: "postgresDef"
       dependsOn:
         name: usePostgresCheckbox
-
 engine:
   chain:
   - condition: "!#usePostgresCheckbox"
@@ -111,3 +110,4 @@ engine:
                     <artifactId>postgresql</artifactId>
                     <scope>runtime</scope>
                   </dependency>${existingDependencies}'
+            

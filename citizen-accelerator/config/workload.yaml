@@ -34,4 +34,9 @@ spec:
       url: https://github.com/cpulcini2003/citizen1
       ref:
         branch: main
-  ##BINDING_OPTION
+  serviceClaims:
+   - name: database
+     ref:
+       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+       kind: ClassClaim
+       name: citizen-database

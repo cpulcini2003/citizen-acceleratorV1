@@ -19,10 +19,25 @@ accelerator:
       inputType: text
       label: DB URL
       required: true
-      defaultValue: "/citizen-database" # this is the claim to the database
+      defaultValue: "/citizensDef"
       dependsOn:
         name: usePostgresCheckbox
-
+    - name: postgresUsername
+      description: "Database username"
+      inputType: text
+      label: DB URL
+      required: true
+      defaultValue: "postgresDef"
+      dependsOn:
+        name: usePostgresCheckbox
+    - name: postgresPassword
+      description: "Database Password"
+      inputType: text
+      label: DB URL
+      required: true
+      defaultValue: "postgresDef"
+      dependsOn:
+        name: usePostgresCheckbox
 engine:
   chain:
   - condition: "!#usePostgresCheckbox"
@@ -76,7 +91,10 @@ engine:
           substitutions:
             - text: "##DB_PARAMS"
               with:  |
-                'spring.jpa.hibernate.ddl-auto=create-drop
+                'spring.datasource.url=' + #postgresUrl.toLowerCase() + '
+                spring.datasource.username=' + #postgresUsername + '
+                spring.datasource.password=' + #postgresPassword + '
+                spring.jpa.hibernate.ddl-auto=create-drop
                 spring.jpa.show-sql=true
                 spring-jpa.properties.hibernates.dialect=org.hibernate.dialect.PosgreSQLDialect
                 spring-jpa.properties.hibernates.format_sql=true'
@@ -92,15 +110,4 @@ engine:
                     <artifactId>postgresql</artifactId>
                     <scope>runtime</scope>
                   </dependency>${existingDependencies}'
-    - include: ['config/workload.yaml']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "##BINDING_OPTION"
-              with:  |
-                'serviceClaims:
-                   - name: database
-                     ref:
-                       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-                       kind: ClassClaim
-                       name: citizen-database'
+            

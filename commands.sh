@@ -1,5 +1,5 @@
 
-tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url  https://tap-gui.tap-skilled-toad.tapsandbox.com --options '{"usePostgresCheckbox": true, "postgresUrl":"/citizens", "postgresUsername":"postgres", "postgresPassword":"postgres"}' -o "./citizen-accelerator/"
+tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url https://tap-gui.tap-next-mantis.tapsandbox.com --options '{"usePostgresCheckbox": true, "postgresUrl":"/citizen"}' -o "./citizen-1/"
 
 tanzu accelerator create citizen-accelerator --git-repository https://github.com/cpulcini2003/citizen-acceleratorV1 --git-branch main
 

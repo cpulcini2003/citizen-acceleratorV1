@@ -6,7 +6,11 @@ accelerator:
     - citizen
     - PostgreSQL
   options:
-    # CONFIG SERVICE SECTION
+    - name: artifactId
+      inputType: text
+      defaultValue: "citizen-test"
+      label: Module artifact name
+      required: true
     - name: usePostgresCheckbox
       description: "If set to true, application will be configured to use an existing PostgreSQL databse instance"
       label: Use PostgreSQL for persistency?
@@ -14,12 +18,12 @@ accelerator:
       defaultValue: false
       inputType: checkbox
       required: true
-    - name: postgresUrl
-      description: "Database service URL"
+    - name: postgresDbName
+      description: "Database instance name"
       inputType: text
-      label: DB URL
+      label: DB Claim
       required: true
-      defaultValue: "/citizen-database" # this is the claim to the database
+      defaultValue: "citizen"
       dependsOn:
         name: usePostgresCheckbox
 
@@ -69,7 +73,7 @@ engine:
         - type: ReplaceText
           substitutions:
             - text: "dbType"
-              with: "#postgresUrl.toLowerCase()"
+              with: "'Tanzu SQL Postgres ServiceClaim'"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText
@@ -103,4 +107,34 @@ engine:
                      ref:
                        apiVersion: services.apps.tanzu.vmware.com/v1alpha1
                        kind: ClassClaim
-                       name: citizen-database'
+                       name: ' + #postgresDbName + '-db-claim'
+    - include: ['config/postgres.yaml']
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "postgres-sample"
+              with: "#postgresDbName + '-name'"
+        - type: ReplaceText
+          substitutions:
+            - text: "postgres-namespace"
+              with: "#postgresDbName + '-name-ns'"
+        - type: ReplaceText
+          substitutions:
+            - text: "postgres-dbname"
+              with: "#postgresDbName"
+    - include: ['postgresInstanceCreate.sh']
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "DB-NAMESPACE"
+              with: "#postgresDbName + '-name-ns'"
+        - type: ReplaceText
+          substitutions:
+            - text: "DBNAME"
+              with: "#postgresDbName"
+    - include: ['postgresClaimCreate.sh']
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "DBNAME"
+              with: "#postgresDbName"

@@ -31,7 +31,7 @@ spec:
       value: cpulcini2003
   source:
     git:
-      url: https://github.com/cpulcini2003/citizen1
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
   ##BINDING_OPTION

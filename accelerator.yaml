@@ -80,7 +80,7 @@ engine:
           substitutions:
             - text: "##DB_PARAMS"
               with:  |
-                'spring.jpa.hibernate.ddl-auto=create-drop
+                'spring.jpa.hibernate.ddl-auto=update
                 spring.jpa.show-sql=true
                 spring-jpa.properties.hibernates.dialect=org.hibernate.dialect.PosgreSQLDialect
                 spring-jpa.properties.hibernates.format_sql=true'
@@ -103,36 +103,16 @@ engine:
             - text: "##BINDING_OPTION"
               with:  |
                 'serviceClaims:
-                   - name: database
+                   - name: ' + #postgresDbName + '-database
                      ref:
                        apiVersion: services.apps.tanzu.vmware.com/v1alpha1
                        kind: ClassClaim
-                       name: ' + #postgresDbName + '-db-claim'
-    - include: ['config/postgres.yaml']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "postgres-sample"
-              with: "#postgresDbName + '-name'"
-        - type: ReplaceText
-          substitutions:
-            - text: "postgres-namespace"
-              with: "#postgresDbName + '-name-ns'"
-        - type: ReplaceText
-          substitutions:
-            - text: "postgres-dbname"
-              with: "#postgresDbName"
-    - include: ['postgresInstanceCreate.sh']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "DB-NAMESPACE"
-              with: "#postgresDbName + '-name-ns'"
+                       name: ' + #postgresDbName
         - type: ReplaceText
           substitutions:
             - text: "DBNAME"
               with: "#postgresDbName"
-    - include: ['postgresClaimCreate.sh']
+    - include: ['config/postgresClaimCreate.sh']
       chain:
         - type: ReplaceText
           substitutions:

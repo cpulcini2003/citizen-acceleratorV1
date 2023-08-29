@@ -78,6 +78,10 @@ engine:
           substitutions:
             - text: "dbType"
               with: "'Tanzu SQL Postgres ServiceClaim'"
+        - type: ReplaceText
+          substitutions:
+            - text: "DBNAME"
+              with: "#postgresDbName"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText

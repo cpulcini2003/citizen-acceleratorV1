@@ -1,4 +1,4 @@
-tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url https://tap-gui.tap-great-mallard.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
+tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url https://tap-gui.tap-maximum-wolf.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
 
 
 git add .

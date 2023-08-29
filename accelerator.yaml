@@ -42,7 +42,7 @@ engine:
       - type: ReplaceText
         substitutions:
           - text: "DBNAME"
-            with: "#postgresDbName"
+            with: "'In-Memory instance'"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText

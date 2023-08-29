@@ -39,6 +39,10 @@ engine:
         substitutions:
           - text: "dbType"
             with: "'In-Memory jdbc:h2:mem:testdb'"
+      - type: ReplaceText
+        substitutions:
+          - text: "DBNAME"
+            with: "#postgresDbName"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText

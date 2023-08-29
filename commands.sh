@@ -1,6 +1,12 @@
 tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url https://tap-gui.tap-great-mallard.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
 
+
+git add .
+git commit -m "accelerator-commit1"
+git push -u origin main
 tanzu accelerator create citizen-accelerator --git-repository https://github.com/cpulcini2003/citizen-acceleratorV1 --git-branch main
+
+tanzu accelerator delete citizen-accelerator
 
 tanzu service class-claim create customer-database --class postgresql-unmanaged -n cpu
 

@@ -46,7 +46,7 @@ As with the local deployment a PostgreSQL instance needs to be available at the 
    - Create the service `ClassClaim` to be consumed by your workload that references your PostgreSQL instance:
 
       ```bash
-      $ tanzu service class-claim create customer-database --class postgresql-unmanaged -n <workload-namespace>
+      $ tanzu service class-claim create DBNAME --class postgresql-unmanaged -n <workload-namespace>
       ```
 
 2. App Developer Tasks
@@ -54,7 +54,7 @@ As with the local deployment a PostgreSQL instance needs to be available at the 
    Now that we have the database instance and class claim configured, we can check the database state by running:
    
    ```bash
-   tanzu services class-claims get customer-database -n <workload-namespace>
+   tanzu services class-claims get DBNAME -n <workload-namespace>
    ```
 
    Make sure the claim status is "Ready".

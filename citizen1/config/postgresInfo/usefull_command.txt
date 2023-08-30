@@ -1,0 +1,52 @@
+
+
+##POSTGRES OPERATOR INSTALLATION
+echo "LOGIN"
+helm registry login registry.tanzu.vmware.com --username=cpulcini@vmware.com --password=Vmware_001
+kubectl create ns postgres-operator
+kubectl create secret docker-registry regsecret --docker-server=https://registry.tanzu.vmware.com/ --docker-username=cpulcini@vmware.com --docker-password=Vmware_001 --namespace=postgres-operator
+echo "CLEAN"
+rm -rf /tmp/vmware-sql-postgres-operator
+echo "PULL"
+helm pull oci://registry.tanzu.vmware.com/tanzu-sql-postgres/vmware-sql-postgres-operator --version v2.2.0 --untar --untardir /tmp
+echo "CHECK"
+kubectl get crd postgres.sql.tanzu.vmware.com
+echo "INSTALL"
+helm install my-postgres-operator /tmp/vmware-sql-postgres-operator --namespace=postgres-operator --create-namespace --wait
+echo "SA CHECK"
+kubectl get serviceaccount -n postgres-operator
+echo "sleep 30"
+sleep 30
+echo "CHECK RUN"
+kubectl get all --selector app=postgres-operator -n postgres-operator
+echo "CHECK API"
+kubectl api-resources --api-group=sql.tanzu.vmware.com
+echo "LIST"
+helm list -n postgres-operator
+echo "GET STORAGECLASS"
+kubectl get storageclasses
+
+
+##POSTGRES INSTANCE CREATION
+
+kubectl create ns DB-NAMESPACE
+kubectl create secret docker-registry regsecret --docker-server=https://registry.tanzu.vmware.com/ --docker-username=cpulcini@vmware.com --docker-password=Vmware_001 --namespace=DB-NAMESPACE
+kubectl apply -f config/postgres/postgres.yaml
+kubectl get pod -n DB-NAMESPACE
+kubectl get pvc -n DB-NAMESPACE
+kubectl exec -it DBNAME-name-0 -n DB-NAMESPACE -- psql
+
+
+##CONNECT TO CLAIMED DB
+
+tanzu services class-claims get citizen --namespace cpu | yq '.Status' | grep Name | yq '.Name'
+>>>e27cd893-2589-49b9-b6a5-4c9801d0e9e9
+
+kubectl get secret e27cd893-2589-49b9-b6a5-4c9801d0e9e9 -n cpu -o yaml | yq '.data.database' | base64 -d
+echo
+kubectl get secret e27cd893-2589-49b9-b6a5-4c9801d0e9e9 -n cpu -o yaml | yq '.data.username' | base64 -d
+echo
+kubectl get secret e27cd893-2589-49b9-b6a5-4c9801d0e9e9 -n cpu -o yaml | yq '.data.password' | base64 -d
+echo
+
+kubectl exec -it citizen-v4v9s-0 -n citizen-v4v9s -- psql -d citizen-v4v9s -U postgres

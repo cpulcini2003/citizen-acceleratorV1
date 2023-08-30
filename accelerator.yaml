@@ -27,6 +27,9 @@ accelerator:
       dependsOn:
         name: usePostgresCheckbox
 
+  imports:
+    - name: tap-workload
+
 engine:
   chain:
   - condition: "!#usePostgresCheckbox"
@@ -120,6 +123,16 @@ engine:
           substitutions:
             - text: "DBNAME"
               with: "#postgresDbName"
+        - type: ReplaceText
+          substitutions:
+          - text: ARTIFACTID
+            with: "#artifactId"
+        - merge:
+            - type: InvokeFragment
+              reference: tap-workload
+            - include: [ "**" ]
+          onConflict: UseFirst
+
     - include: ['config/postgresClaimCreate.sh']
       chain:
         - type: ReplaceText

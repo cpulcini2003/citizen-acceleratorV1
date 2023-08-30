@@ -35,8 +35,8 @@ engine:
   - condition: "!#usePostgresCheckbox"
     merge:
     - include: ['**']
-      exclude: ['README.md']
-    - include: [ "README.md" ]
+      exclude: ['README-DEPLOY.md']
+    - include: [ "README-DEPLOY.md" ]
       chain:
       - type: ReplaceText
         substitutions:
@@ -85,8 +85,8 @@ engine:
   - condition: "#usePostgresCheckbox"
     merge:
     - include: ['**']
-      exclude: ['README.md']
-    - include: [ "README.md" ]
+      exclude: ['README-DEPLOY.md']
+    - include: [ "README-DEPLOY.md" ]
       chain:
         - type: ReplaceText
           substitutions:

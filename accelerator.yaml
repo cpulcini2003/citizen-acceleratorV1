@@ -28,7 +28,7 @@ accelerator:
         name: usePostgresCheckbox
 
   imports:
-    - name: tap-workload
+    - name: tap-workload #THIS WILL INCLUDE GIT SOURCE IN THE WORKLOAD YAML
 
 engine:
   chain:
@@ -70,6 +70,18 @@ engine:
                     <artifactId>h2</artifactId>
                     <scope>runtime</scope>
                   </dependency>${existingDependencies}'
+                      - include: ['config/workload.yaml']
+    - include: ['config/workload.yaml']
+      chain:
+        - type: ReplaceText
+          substitutions:
+          - text: ARTIFACTID
+            with: "#artifactId"
+        - merge:
+            - type: InvokeFragment
+              reference: tap-workload
+            - include: [ "**" ]
+          onConflict: UseFirst
 
   - condition: "#usePostgresCheckbox"
     merge:

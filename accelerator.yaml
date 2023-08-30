@@ -74,7 +74,7 @@ engine:
       chain:
         - type: ReplaceText
           substitutions:
-            - text: ARTIFACTID
+            - text: "ARTIFACTID"
               with: "#artifactId"
         - merge:
             - type: InvokeFragment
@@ -136,7 +136,7 @@ engine:
               with: "#postgresDbName"
         - type: ReplaceText
           substitutions:
-            - text: ARTIFACTID
+            - text: "ARTIFACTID"
               with: "#artifactId"
         - merge:
             - type: InvokeFragment

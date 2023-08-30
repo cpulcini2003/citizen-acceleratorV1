@@ -6,11 +6,7 @@ accelerator:
     - citizen
     - PostgreSQL
   options:
-    - name: artifactId
-      inputType: text
-      defaultValue: "citizen-test"
-      label: Module artifact name
-      required: true
+    # CONFIG SERVICE SECTION
     - name: usePostgresCheckbox
       description: "If set to true, application will be configured to use an existing PostgreSQL databse instance"
       label: Use PostgreSQL for persistency?
@@ -18,18 +14,30 @@ accelerator:
       defaultValue: false
       inputType: checkbox
       required: true
-    - name: postgresDbName
-      description: "Database instance name"
+    - name: postgresUrl
+      description: "Database service URL"
       inputType: text
-      label: DB Claim
+      label: DB URL
       required: true
-      defaultValue: "citizen"
+      defaultValue: "/citizensDef"
       dependsOn:
         name: usePostgresCheckbox
-
-  imports:
-    - name: tap-workload #THIS WILL INCLUDE GIT SOURCE IN THE WORKLOAD YAML
-
+    - name: postgresUsername
+      description: "Database username"
+      inputType: text
+      label: DB URL
+      required: true
+      defaultValue: "postgresDef"
+      dependsOn:
+        name: usePostgresCheckbox
+    - name: postgresPassword
+      description: "Database Password"
+      inputType: text
+      label: DB URL
+      required: true
+      defaultValue: "postgresDef"
+      dependsOn:
+        name: usePostgresCheckbox
 engine:
   chain:
   - condition: "!#usePostgresCheckbox"
@@ -42,10 +50,6 @@ engine:
         substitutions:
           - text: "dbType"
             with: "'In-Memory jdbc:h2:mem:testdb'"
-      - type: ReplaceText
-        substitutions:
-          - text: "DBNAME"
-            with: "'In-Memory instance'"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText
@@ -70,17 +74,6 @@ engine:
                     <artifactId>h2</artifactId>
                     <scope>runtime</scope>
                   </dependency>${existingDependencies}'
-    - include: ['config/workload.yaml']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: ARTIFACTID
-              with: "#artifactId"
-        - merge:
-            - type: InvokeFragment
-              reference: tap-workload
-            - include: [ "**" ]
-          onConflict: UseFirst
 
   - condition: "#usePostgresCheckbox"
     merge:
@@ -91,18 +84,17 @@ engine:
         - type: ReplaceText
           substitutions:
             - text: "dbType"
-              with: "'Tanzu SQL Postgres ServiceClaim'"
-        - type: ReplaceText
-          substitutions:
-            - text: "DBNAME"
-              with: "#postgresDbName"
+              with: "#postgresUrl.toLowerCase()"
     - include: ['src/main/resources/application.properties']
       chain:
         - type: ReplaceText
           substitutions:
             - text: "##DB_PARAMS"
               with:  |
-                'spring.jpa.hibernate.ddl-auto=update
+                'spring.datasource.url=' + #postgresUrl.toLowerCase() + '
+                spring.datasource.username=' + #postgresUsername + '
+                spring.datasource.password=' + #postgresPassword + '
+                spring.jpa.hibernate.ddl-auto=create-drop
                 spring.jpa.show-sql=true
                 spring-jpa.properties.hibernates.dialect=org.hibernate.dialect.PosgreSQLDialect
                 spring-jpa.properties.hibernates.format_sql=true'
@@ -118,35 +110,4 @@ engine:
                     <artifactId>postgresql</artifactId>
                     <scope>runtime</scope>
                   </dependency>${existingDependencies}'
-    - include: ['config/workload.yaml']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "##BINDING_OPTION"
-              with:  |
-                'serviceClaims:
-                   - name: ' + #postgresDbName + '-database
-                     ref:
-                       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-                       kind: ClassClaim
-                       name: ' + #postgresDbName
-        - type: ReplaceText
-          substitutions:
-            - text: "DBNAME"
-              with: "#postgresDbName"
-        - type: ReplaceText
-          substitutions:
-            - text: ARTIFACTID
-              with: "#artifactId"
-        - merge:
-            - type: InvokeFragment
-              reference: tap-workload
-            - include: [ "**" ]
-          onConflict: UseFirst
-
-    - include: ['config/postgresClaimCreate.sh']
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "DBNAME"
-              with: "#postgresDbName"
+            

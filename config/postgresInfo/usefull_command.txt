@@ -2,9 +2,9 @@
 
 ##POSTGRES OPERATOR INSTALLATION
 echo "LOGIN"
-helm registry login registry.tanzu.vmware.com --username=cpulcini@vmware.com --password=Vmware_001
+helm registry login registry.tanzu.vmware.com --username=cpulcini@vmware.com --password=
 kubectl create ns postgres-operator
-kubectl create secret docker-registry regsecret --docker-server=https://registry.tanzu.vmware.com/ --docker-username=cpulcini@vmware.com --docker-password=Vmware_001 --namespace=postgres-operator
+kubectl create secret docker-registry regsecret --docker-server=https://registry.tanzu.vmware.com/ --docker-username=cpulcini@vmware.com --docker-password= --namespace=postgres-operator
 echo "CLEAN"
 rm -rf /tmp/vmware-sql-postgres-operator
 echo "PULL"

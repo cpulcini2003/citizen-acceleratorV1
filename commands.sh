@@ -1,5 +1,4 @@
-tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --server-url https://tap-gui.tap-neat-ferret.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
-
+tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --fragment-names tap-workload --server-url https://tap-gui.tapv-magical-gelding.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
 
 git add .
 git commit -m "accelerator-commit1"
@@ -8,9 +7,8 @@ tanzu accelerator create citizen-accelerator --git-repository https://github.com
 
 tanzu accelerator delete citizen-accelerator
 
-tanzu service class-claim create customer-database --class postgresql-unmanaged -n cpu
-
-tanzu services class-claims get customer-database --namespace cpu
+tanzu service class-claim create citizen-database --class postgresql-unmanaged -n cpu
+tanzu services class-claims get citizen-database --namespace cpu
 
 Claim Reference: 
   services.apps.tanzu.vmware.com/v1alpha1:ClassClaim:customer-database

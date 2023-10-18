@@ -1,4 +1,9 @@
+#USE FRAGMENT
 tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(pwd)" --fragment-names tap-workload --server-url https://tap-gui.tapv-magical-gelding.tapsandbox.com --options '{"usePostgresCheckbox": true}' -o "./citizen1/"
+
+
+
+
 
 git add .
 git commit -m "accelerator-commit1"

@@ -8,6 +8,13 @@ tanzu accelerator generate-from-local --accelerator-path citizen-accelerator="$(
 git add .
 git commit -m "accelerator-commit1"
 git push -u origin main
+[main e581705] accelerator-commit1
+ 1 file changed, 5 insertions(+)
+Username for 'https://github.com': cpulcini2003
+Password for 'https://cpulcini2003@github.com': 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
+
+
+
 tanzu accelerator create citizen-accelerator --git-repository https://github.com/cpulcini2003/citizen-acceleratorV1 --git-branch main
 
 tanzu accelerator delete citizen-accelerator

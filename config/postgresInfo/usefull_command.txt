@@ -57,11 +57,15 @@ tanzu services class-claims get citizen -n cpu
 tanzu services class-claims get citizen --namespace cpu | yq '.Status' | grep Name | yq '.Name'
 >>>30fa72fa-982a-40e1-971d-f2cf9ca6d114
 
-kubectl get secret 30fa72fa-982a-40e1-971d-f2cf9ca6d114 -n cpu -o yaml | yq '.data.database' | base64 -d
+kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.database' | base64 -d
 echo
-kubectl get secret 30fa72fa-982a-40e1-971d-f2cf9ca6d114 -n cpu -o yaml | yq '.data.username' | base64 -d
+kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.username' | base64 -d
 echo
-kubectl get secret 30fa72fa-982a-40e1-971d-f2cf9ca6d114 -n cpu -o yaml | yq '.data.password' | base64 -d
+kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.password' | base64 -d
 echo
 
-kubectl exec -it citizen-tctvt-0 -n citizen-tctvt -- psql -d citizen-tctvt -U postgres
+kubectl exec -it citizen-kbtmq-0 -n citizen-kbtmq -- psql -d citizen-kbtmq -U postgres
+
+citizen-kbtmq=# \l
+
+\d

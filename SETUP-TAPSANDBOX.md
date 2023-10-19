@@ -10,6 +10,7 @@ kubectl get secret -n tap-install tap-tap-install-values -o json | jq '.data["va
 
 
 MODIFY tap-value.yaml tap-gui section
+<CONFIGURE c7137caa89c364683f0d ON GITHUB including tap gui path : https://tap-gui.tapv-magical-gelding.tapsandbox.com/
 tap_gui:
   service_type: ClusterIP
   metadataStoreAutoconfiguration: true
@@ -25,7 +26,6 @@ tap_gui:
           development:
             clientId: c7137caa89c364683f0d
             clientSecret: 9e03b1bad05a998c5f4fccc77f5ceb3e7f82e96a   
-            <CONFIGURE THIS ON GITHUB including tap gui path : https://tap-gui.tapv-magical-gelding.tapsandbox.com/
   tls:
     secretName: tap-wildcard-cert
     namespace: cert-manager  
@@ -42,6 +42,9 @@ namespace_provisioner:
 APPLY CHANGES
 tanzu package installed list -n tap-install (check version)
 tanzu package installed update tap -p tap.tanzu.vmware.com -v 1.6.3 --values-file tap-value.yaml -n tap-install
+
+
+CREATE ACCELERATOR
 
 
 TEST ACCELERATOR TO BE ABLE TO CREATE GIT REPO FOR THE OUTPUT

@@ -47,19 +47,11 @@ tanzu package installed update tap -p tap.tanzu.vmware.com -v 1.6.3 --values-fil
 CREATE ACCELERATOR
 
 
-TEST ACCELERATOR TO BE ABLE TO CREATE GIT REPO FOR THE OUTPUT
-THE CLONE LOCALLY THE APP
-pcarlo@pcarlo3C2T5 Development % git clone https://github.com/cpulcini2003/citizen10
-Cloning into 'citizen10'...
-remote: Enumerating objects: 42, done.
-remote: Counting objects: 100% (42/42), done.
-remote: Compressing objects: 100% (34/34), done.
-remote: Total 42 (delta 0), reused 42 (delta 0), pack-reused 0
-Receiving objects: 100% (42/42), 73.05 KiB | 1.11 MiB/s, done.
-pcarlo@pcarlo3C2T5 Development %
-
 CREATE DEVELOPER NAMESPACE (cpu)
 kubectl create ns cpu
+kubectl label namespaces cpu  apps.tanzu.vmware.com/tap-ns=""
+kubectl get secrets,serviceaccount,rolebinding,pods,workload,configmap,limitrange -n cpu
+
 
 CREATE GIT SECRET IN CPU NAMESPACE
 kubectl apply -f config/gitsecret.yaml -n cpu
@@ -73,13 +65,32 @@ metadata:
 type: kubernetes.io/basic-auth
 stringData:
   username: cpulcini2003
-  password: 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   <CHANGE IF NEEDED>
+  password: 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   <CHANGE IF NEEDED>
+
+  
+
+
+TEST ACCELERATOR TO BE ABLE TO CREATE GIT REPO FOR THE OUTPUT
+THE CLONE LOCALLY THE APP
+pcarlo@pcarlo3C2T5 Development % git clone https://github.com/cpulcini2003/citizen10
+Cloning into 'citizen10'...
+remote: Enumerating objects: 42, done.
+remote: Counting objects: 100% (42/42), done.
+remote: Compressing objects: 100% (34/34), done.
+remote: Total 42 (delta 0), reused 42 (delta 0), pack-reused 0
+Receiving objects: 100% (42/42), 73.05 KiB | 1.11 MiB/s, done.
+pcarlo@pcarlo3C2T5 Development %
 
 
 
+________________READY
+
+PREPARE DATABASE BINDING
+tanzu service class-claim create citizen --class postgresql-unmanaged -n cpu
+tanzu services class-claims get citizen --namespace cpu
 
 APPLY WORKLOAD
-kubectl apply -f config/workload.yaml -n cpu
+kubectl apply -f config/workload.yaml -n cpu   <<<<< REVIEW SETTINGS>>>>>
 
 
 CHECK STATUS

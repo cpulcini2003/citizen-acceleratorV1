@@ -1,4 +1,5 @@
 
+OPTION 1 - INSTALLING POSTGRESS OPERATOR
 
 ##POSTGRES OPERATOR INSTALLATION
 echo "LOGIN"
@@ -47,24 +48,35 @@ kubectl get pvc -n DB-NAMESPACE
 kubectl exec -it DBNAME-name-0 -n DB-NAMESPACE -- psql
 
 
+OPTION 2 - LEVERAGING PRE INSTALLED OPERATORS (ON TAPSANDBOX)
+pcarlo@pcarlo3C2T5 citizen7 % tanzu services class list
+  NAME                  DESCRIPTION
+  kafka-unmanaged       Kafka by Bitnami
+  mongodb-unmanaged     MongoDB by Bitnami
+  mysql-unmanaged       MySQL by Bitnami
+  postgresql-unmanaged  PostgreSQL by Bitnami
+  rabbitmq-unmanaged    RabbitMQ by Bitnami
+  redis-unmanaged       Redis by Bitnami
+  test-login            Login by AppSSO - user:password - UNSAFE FOR PRODUCTION!
+pcarlo@pcarlo3C2T5 citizen7 %
+
 ##POSTGRES class-claim create CREATION TO TEST FOR cpu user
-kubectl create ns cpu
 tanzu service class-claim create citizen --class postgresql-unmanaged -n cpu
 tanzu services class-claims get citizen -n cpu
 
 ##CONNECT TO CLAIMED DB
 
 tanzu services class-claims get citizen --namespace cpu | yq '.Status' | grep Name | yq '.Name'
->>>30fa72fa-982a-40e1-971d-f2cf9ca6d114
+>>>26cbc79e-8e68-4bdc-af67-3f18a7395095
 
-kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.database' | base64 -d
+kubectl get secret 26cbc79e-8e68-4bdc-af67-3f18a7395095 -n cpu -o yaml | yq '.data.database' | base64 -d
 echo
-kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.username' | base64 -d
+kubectl get secret 26cbc79e-8e68-4bdc-af67-3f18a7395095 -n cpu -o yaml | yq '.data.username' | base64 -d
 echo
-kubectl get secret 1b4ba3da-eb68-43a0-847f-87a0bb8529fd -n cpu -o yaml | yq '.data.password' | base64 -d
+kubectl get secret 26cbc79e-8e68-4bdc-af67-3f18a7395095 -n cpu -o yaml | yq '.data.password' | base64 -d
 echo
 
-kubectl exec -it citizen-kbtmq-0 -n citizen-kbtmq -- psql -d citizen-kbtmq -U postgres
+kubectl exec -it citizen-928pg-0 -n citizen-928pg -- psql -d citizen-928pg -U postgres
 
 citizen-kbtmq=# \l
 

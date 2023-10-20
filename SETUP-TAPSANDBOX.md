@@ -65,9 +65,9 @@ metadata:
 type: kubernetes.io/basic-auth
 stringData:
   username: cpulcini2003
-  password: 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   <CHANGE IF NEEDED>
+  password: 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   <CHANGE IF NEEDED>
 
-  
+
 
 
 TEST ACCELERATOR TO BE ABLE TO CREATE GIT REPO FOR THE OUTPUT
